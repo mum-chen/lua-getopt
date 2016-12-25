@@ -6,11 +6,9 @@
 --======== include and extern variable & function ============================
 local utils = require("utils")
 local config = require("config")
-local print = require("color-p").print
 
 local split = utils.split
 local unpack = utils.unpack
-
 
 -- config
 local REDUNDANCY = config.redundancy
@@ -231,6 +229,8 @@ local function usage_callback()
 		s,t,help:R:1,2
 		"a" same as "a:N:0"
 	]]
+	print(usage)
+	return usage
 end
 
 --------------------------------------------------------------------------------
@@ -477,7 +477,7 @@ local function run(args)
 	callback()
 end
 
-
+--======== return package ====================================================
 return {
 	run = run,
 	default = default,

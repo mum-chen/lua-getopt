@@ -1,0 +1,1 @@
+This utils using the goto so the LUA_VERSION must newer than lua5.2

@@ -32,7 +32,7 @@ local function _unimplemented(cmd)
 end
 
 local function _default(args)
-	--[[
+	--[[ error example
 	local err = "the input args don't have option"
 	print(err)
 	return false, err
@@ -367,6 +367,10 @@ local function unravel_input(args)
 			for word in p:gmatch("%w") do
 				table.insert(_args, "-" .. word)
 			end
+		elseif "L" == t then
+			table.insert(_args, "--" .. p)
+		elseif "S" == t then
+			table.insert(_args, "-" ..p)
 		else
 			table.insert(_args, p)
 		end
@@ -450,11 +454,6 @@ local function callback()
 			end
 		elseif num > cbitem.e then
 			cbitem.f(input:unpack(1, cbitem.e))
-			--[[
-			print("red")
-			print(cbitem.e + 1)
-			print(input:unpack(cbitem.e + 1))
-			--]]
 			add(redundancy, input:unpack(cbitem.e + 1))
 		else
 			cbitem.f(input:unpack())

@@ -15,3 +15,8 @@ echo
 echo "undefine d"
 echo "lua getopt-example.lua 1 2 3 -ab 6 10 -d "
 lua getopt-example.lua 1 2 3 -ab 6 10 -d
+
+echo
+echo "opt '--'"
+echo "lua getopt-example.lua -ab 6 10 -- dad -d -c"
+lua getopt-example.lua -ab 6 10 -- dad -d -c

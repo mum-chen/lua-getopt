@@ -2,7 +2,7 @@
 -- local getopt = require('getopt.lua')
 local LUA_GETOPT_PATH = "../src/?.lua;"
 package.path = LUA_GETOPT_PATH .. package.path
-local print = require("color-p").print
+print = require("color-p").print
 local getopt = require("getopt")
 
 --======== test area ===========================================================

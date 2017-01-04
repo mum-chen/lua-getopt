@@ -296,7 +296,7 @@ local function input_type(param)
 		end
 	elseif #prefix == 2 then
 		if "" == word then
-			return "B", ""			-- blank
+			return "B", ""				-- blank
 		else
 			return "L", word			-- long
 		end
@@ -393,7 +393,6 @@ local function convert_input(args)
 end
 
 local function set_inmap(args)
-
 	local opt = ""
 
 	for t, i, p in foreach_input(args) do
@@ -425,7 +424,6 @@ local function add(target, ...)
 end
 
 local function _validate_opt(redundancy)
-
 	for k, input in pairs(inmap) do
 		local cbitem = __get_cbmap(k)
 		if not cbitem then
@@ -445,11 +443,8 @@ local function _callback(redundancy)
 
 		if num < cbitem.b then
 			local ret = _lakeparams(k, cbitem.b, num)
-			if not ret then
-				os.exit(1)
-			else
-				union(redundancy, input)
-			end
+			local _ = (not ret) and os.exit(1)
+			union(redundancy, input)
 		elseif num > cbitem.e then
 			cbitem.f(input:unpack(1, cbitem.e))
 			add(redundancy, input:unpack(cbitem.e + 1))

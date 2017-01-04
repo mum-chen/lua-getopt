@@ -399,13 +399,11 @@ local function set_inmap(args)
 		if (t == "S") or (t == "L" ) or (t == "B") then
 			opt = p
 			__set_inmap(opt)
-			goto continue
 		elseif (t == "E") or (t == "C") then
 			error("system error")
+		else -- case t == param
+			__set_inmap(opt, p)
 		end
-
-		__set_inmap(opt, p)
-		::continue::
 	end
 end
 
@@ -426,7 +424,7 @@ local function add(target, ...)
 end
 
 local function callback()
-	local blank = inmap[""]
+	local blank = inmap[""] or {}
 	inmap[""] = nil
 	local redundancy = initem:new()
 

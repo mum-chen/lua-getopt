@@ -278,6 +278,10 @@ local function __set_inmap(name, param)
 	inmap[name]:add(param)
 end
 
+local function __remove_inmap(name)
+	inmap[name] = nil
+end
+
 local function input_type(param)
 	local prefix, word = string.match(param, "(%-*)(.*)")
 	if "" == prefix then
@@ -292,7 +296,7 @@ local function input_type(param)
 		end
 	elseif #prefix == 2 then
 		if "" == word then
-			return "B", "--"			-- blank
+			return "B", ""			-- blank
 		else
 			return "L", word			-- long
 		end
@@ -303,7 +307,8 @@ end
 
 
 --[[
-return  tag, index, pararm
+return  tag, index, pararm, ori_param
+such as "L", 1, abbr, --abbr
 --]]
 local function foreach_input(args)
 	local idx = 1
@@ -320,11 +325,11 @@ local function foreach_input(args)
 
 			param = args[_idx]
 			if not param then
-				return nil, _idx, param
+				return nil, _idx, param, param
 			end
 
 			if isbank then
-				return "P", _idx, param
+				return "P", _idx, param, param
 			end
 
 			tag, _param = input_type(param)
@@ -333,25 +338,25 @@ local function foreach_input(args)
 				isbank = true
 			elseif "E" == tag then
 				local ret = _errinput(_param)
-				local _ = ret and os.exit(1)
+				local _ = (not ret) and os.exit(1)
 			end
 			-- case "E" loop, else return
 		until ("E" ~= tag )
 
-		return tag, _idx, _param
+		return tag, _idx, _param, param
 	end
 end
 
 -- consider all opt is long-opt
 local function prefix_input(args)
 	local _args = {}
-	for t, i, p in foreach_input(args) do
+	for t, i, p, ori_p in foreach_input(args) do
 		local _p = p
 		if ("L" == t) or ("S" == t) or ("C" == t ) then
 			_p = "--" .. _p
 		end
 		
-		table.insert(_args, _p)
+		table.insert(_args, ori_p)
 	end
 
 	return _args
@@ -362,17 +367,13 @@ end
 --]]
 local function unravel_input(args)
 	local _args = {}
-	for t, i, p in foreach_input(args) do
+	for t, i, p, ori_p in foreach_input(args) do
 		if "C" == t then
 			for word in p:gmatch("%w") do
 				table.insert(_args, "-" .. word)
 			end
-		elseif "L" == t then
-			table.insert(_args, "--" .. p)
-		elseif "S" == t then
-			table.insert(_args, "-" ..p)
 		else
-			table.insert(_args, p)
+			table.insert(_args, ori_p)
 		end
 	end
 
@@ -396,7 +397,7 @@ local function set_inmap(args)
 	local opt = ""
 
 	for t, i, p in foreach_input(args) do
-		if (t == "S") or (t == "L" ) or (t == "B") then
+		if (t == "S") or (t == "L" ) or (t == "B")then
 			opt = p
 			__set_inmap(opt)
 		elseif (t == "E") or (t == "C") then
@@ -423,23 +424,23 @@ local function add(target, ...)
 	_union(target, {...})
 end
 
-local function callback()
-	local blank = inmap[""] or {}
-	inmap[""] = nil
-	local redundancy = initem:new()
+local function _validate_opt(redundancy)
 
 	for k, input in pairs(inmap) do
 		local cbitem = __get_cbmap(k)
 		if not cbitem then
 			local ret = _unimplemented(k)
-			if not ret then
-				os.exit(1)
-			else
-				union(redundancy, input)
-				goto continue
-			end
-		end
+			local _ = (not ret) and os.exit(1)
 
+			union(redundancy, input)
+			__remove_inmap(k)
+		end
+	end
+end
+
+local function _callback(redundancy)
+	for k, input in pairs(inmap) do
+		local cbitem = __get_cbmap(k)
 		local num = input:number()
 
 		if num < cbitem.b then
@@ -448,7 +449,6 @@ local function callback()
 				os.exit(1)
 			else
 				union(redundancy, input)
-				goto continue
 			end
 		elseif num > cbitem.e then
 			cbitem.f(input:unpack(1, cbitem.e))
@@ -456,9 +456,16 @@ local function callback()
 		else
 			cbitem.f(input:unpack())
 		end
-
-		::continue::	
 	end
+end
+
+local function callback()
+	local blank = inmap[""] or initem:new()
+	inmap[""] = nil
+	local redundancy = initem:new()
+
+	_validate_opt(redundancy)
+	_callback(redundancy)
 
 	if REDUNDANCY then
 		union(blank, redundancy)

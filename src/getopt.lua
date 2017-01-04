@@ -303,7 +303,6 @@ end
 
 
 --[[
-
 return  tag, index, pararm
 --]]
 local function foreach_input(args)
@@ -313,30 +312,31 @@ local function foreach_input(args)
 	local isbank = false
 
 	return function()
-		::redo::
-		local _idx = idx
-		idx = idx + 1
+		local tag, _param, param, _idx
 
-		local param = args[_idx]
-		if not param then
-			return nil, _idx, param
-		end
+		repeat
+			_idx = idx
+			idx = idx + 1
 
-		if isbank then
-			return "P", _idx, param
-		end
-
-		local tag, _param = input_type(param)
-
-		if "B" == tag then
-			isbank = true
-		elseif "E" == tag then
-			local ret = _errinput(_param)
-			if not ret then
-				os.exit(1)
+			param = args[_idx]
+			if not param then
+				return nil, _idx, param
 			end
-			goto redo
-		end
+
+			if isbank then
+				return "P", _idx, param
+			end
+
+			tag, _param = input_type(param)
+
+			if "B" == tag then
+				isbank = true
+			elseif "E" == tag then
+				local ret = _errinput(_param)
+				local _ = ret and os.exit(1)
+			end
+			-- case "E" loop, else return
+		until ("E" ~= tag )
 
 		return tag, _idx, _param
 	end

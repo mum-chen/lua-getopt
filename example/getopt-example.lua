@@ -1,8 +1,8 @@
 --======== include and declare constant =======================================
 -- local getopt = require('getopt.lua')
-local LUA_GETOPT_PATH = "../src/?.lua;"
+local LUA_GETOPT_PATH = "../?.lua;"
 package.path = LUA_GETOPT_PATH .. package.path
-print = require("color-p").print
+print = require("src.color-p").print
 local getopt = require("getopt")
 
 --======== test area ===========================================================

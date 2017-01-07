@@ -4,8 +4,9 @@
 @init   2016 12 25
 --]]
 --======== include and extern variable & function ============================
-local utils = require("utils")
-local config = require("config")
+package.path = "../?.lua;" .. package.path
+local utils = require("src.getopt_utils")
+local config = require("src.getopt_config")
 
 local split = utils.split
 local unpack = utils.unpack

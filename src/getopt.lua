@@ -143,7 +143,7 @@ function cbitem.new_necessary(f,num)
 end
 
 function cbitem.new_unlimit(f,b)
-	return cbitem:new(f, b, self.INFINITE)
+	return cbitem:new(f, b, cbitem.INFINITE)
 end
 
 function cbitem.new_unnecessary(f)

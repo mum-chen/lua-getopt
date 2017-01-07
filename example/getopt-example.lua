@@ -24,7 +24,7 @@ end
 
 
 local function initopt()
-	getopt.default("D", def)
+	getopt.setmain(def)
 	getopt.callback("a,cc", empty)
 	getopt.callback("b:R:2,3", f1)
 	

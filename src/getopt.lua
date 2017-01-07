@@ -52,7 +52,7 @@ end
 
 local function usage_default()
 	local usage = [[
-	    setdefault(func, D|U|L|E),
+	    setdefault(D|U|L|E, func),
 	    U: set the unimplemented function,
 	       which called when unimplemented-cmd input
 	       function _unimplemented(cmd)
@@ -68,6 +68,9 @@ local function usage_default()
 	    E: set the errinput function,
 	       which called when the error-opt input
 	       function _errinput(err)
+
+	    setmain(func)
+	       same as setdefault("D", func)
 	]]
 	print(usage)
 	return usage
@@ -88,6 +91,10 @@ local function default(pattern, func)
 	end
 
 	return true
+end
+
+local function setmain(func)
+	default("D", func)
 end
 --------------------------------------------------------------------------------
 -- CALL BACK(param from code) 
@@ -481,6 +488,7 @@ end
 return {
 	run = run,
 	default = default,
+	setmain = setmain,
 	callback = set_cbmap,
 	usage_default = usage_default,
 	usage_callback = usage_callback,

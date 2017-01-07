@@ -20,3 +20,8 @@ echo
 echo "opt '--'"
 echo "lua getopt-example.lua -ab 6 10 -- dad -d -c"
 lua getopt-example.lua -ab 6 10 -- dad -d -c
+
+echo 
+echo "opt unlimited"
+echo "lua getopt-example.lua -c 1 2 3 4 5 6 "
+lua getopt-example.lua -c 1 2 3 4 5 6

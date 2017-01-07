@@ -129,6 +129,10 @@ function cbitem:isinf()
 	return self.e == self.INFINITE
 end
 
+function cbitem:notinf()
+	return not self:isinf()
+end
+
 function cbitem.new_range(f, b, e)
 	assert(b <= e, "begin must small than end")
 	return cbitem:new(f, b, e)
@@ -453,7 +457,7 @@ local function _callback(redundancy)
 			local ret = _lakeparams(k, cbitem.b, num)
 			local _ = (not ret) and os.exit(1)
 			union(redundancy, input)
-		elseif num > cbitem.e then
+		elseif num > cbitem.e and cbitem:notinf() then
 			cbitem.f(input:unpack(1, cbitem.e))
 			add(redundancy, input:unpack(cbitem.e + 1))
 		else

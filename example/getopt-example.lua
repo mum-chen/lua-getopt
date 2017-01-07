@@ -22,12 +22,15 @@ local function f1(...)
 	empty(...)
 end
 
+local function unlmt(...)
+	print(...)
+end
 
 local function initopt()
 	getopt.setmain(def)
 	getopt.callback("a,cc", empty)
 	getopt.callback("b:R:2,3", f1)
-	
+	getopt.callback("c:U:0", unlmt)	
 
 end
 

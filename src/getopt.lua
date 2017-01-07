@@ -80,11 +80,11 @@ local function default(pattern, func)
 	if "D" == pattern then
 		_default = func
 	elseif "U" == pattern then
-
+		_unimplemented = func
 	elseif "E" == pattern then
-
+		_errinput = func
 	elseif "L" == pattern then
-		
+		_lakeparams = func
 	else
 		usage_default()
 		error("error pattern:" .. pattern)

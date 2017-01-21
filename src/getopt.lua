@@ -52,25 +52,25 @@ end
 
 local function usage_default()
 	local usage = [[
-	    setdefault(D|U|L|E, func),
-	    U: set the unimplemented function,
-	       which called when unimplemented-cmd input
-	       function _unimplemented(cmd)
+	setdefault(D|U|L|E, func),
+	U: set the unimplemented function,
+	   which called when unimplemented-cmd input
+	   function _unimplemented(cmd)
 
-	    L: set the lakeparams function,
-	       which called when the necessary param requirement could't meet
-	       function _lakeparams(cmd, expect, fact)
+	L: set the lakeparams function,
+	   which called when the necessary param requirement could't meet
+	   function _lakeparams(cmd, expect, fact)
 
-	    D: set the default function,
-	       which called when the param with null-cmd
-	       function default(pattern, func)
+	D: set the default function,
+	   which called when the param with null-cmd
+	   function default(pattern, func)
 
-	    E: set the errinput function,
-	       which called when the error-opt input
-	       function _errinput(err)
+	E: set the errinput function,
+	   which called when the error-opt input
+	   function _errinput(err)
 
-	    setmain(func)
-	       same as setdefault("D", func)
+	setmain(func)
+	   same as setdefault("D", func)
 	]]
 	print(usage)
 	return usage

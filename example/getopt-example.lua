@@ -2,7 +2,7 @@
 -- local getopt = require('getopt.lua')
 local LUA_GETOPT_PATH = "../?.lua;"
 package.path = LUA_GETOPT_PATH .. package.path
-print = require("src.color-p").print
+print = require("example.color-p").print
 local getopt = require("getopt")
 
 --======== test area ===========================================================
@@ -31,7 +31,6 @@ local function initopt()
 	getopt.callback("a,cc", empty)
 	getopt.callback("b:R:2,3", f1)
 	getopt.callback("c:U:0", unlmt)	
-
 end
 
 

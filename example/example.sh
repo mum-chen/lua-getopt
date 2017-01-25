@@ -25,3 +25,7 @@ echo
 echo "opt unlimited"
 echo "lua getopt-example.lua -c 1 2 3 4 5 6 "
 lua getopt-example.lua -c 1 2 3 4 5 6
+
+echo "negative number check"
+echo "lua getopt-example.lua -c 1 2 3 -4 5 6 "
+lua getopt-example.lua -c 1 2 3 -4 5 6

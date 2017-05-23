@@ -629,6 +629,7 @@ end
 
 ---------- run server ------------------
 local function run(args)
+	inmap = {}
 	local _args = convert_input(args)
 	set_inmap(_args)
 	callback()
